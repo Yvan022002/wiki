@@ -1,8 +1,10 @@
 import express, { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+import cors from 'cors';
 import userRouter from './src/routes/UserRoutes';
 const app = express();
 
 // Middleware
+app.use(cors({ origin: '*', credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

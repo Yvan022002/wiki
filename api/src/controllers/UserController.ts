@@ -8,9 +8,11 @@ const userService = new UserService();
  export async function Login(req: Request, res: Response){
         try {
             const credentials: ConnexionDto = req.body;
+            console.log('Login attempt for credentials:', req.body);
             const { user, token } = await userService.loginUser(credentials);
            return res.status(200).send({message: "User logged in", user: user, token: token});
         } catch (error) {
+          console.log('Login attempt for credentials:', req.body);
            return res.status(401).send({message: error instanceof Error ? error.message : error});
         }
     }

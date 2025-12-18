@@ -33,7 +33,6 @@ export class UserService {
         return this.userRepository.createUser(credentials);
     }
     async loginUser(credentials: ConnexionDto) {
-
         const user = await this.userRepository.getUserByEmail(credentials.email);
         console.log(user);
         if (!user || user.password !== credentials.password) {

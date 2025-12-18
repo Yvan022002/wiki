@@ -4,13 +4,17 @@ import { createBrowserRouter, RouterProvider } from 'react-router'
 import './index.css'
 import App from './App.tsx'
 import  Layout  from './layouts/DashboardLayout.tsx';
+import { PrivateRoute } from './auth/PrivateRout.tsx'
+import SignIn from './auth/SignIn.tsx'
+import { AppProvider } from '@toolpad/core/AppProvider'
+import { AuthProvider } from './auth/AuthContext.tsx'
 const router = createBrowserRouter([
   {
     element: <App />,
     children: [
       {
         path: '/',
-        element: <Layout/>,
+        element:<PrivateRoute><Layout/></PrivateRoute>,
         children: [
           {
             index: true,
@@ -22,6 +26,10 @@ const router = createBrowserRouter([
           }
         ]
       },
+      {
+        path: '/login',
+        element: <SignIn></SignIn>,
+      },
     
     ],
     
@@ -30,6 +38,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router}/>
+    <AuthProvider>
+      <AppProvider>
+        <RouterProvider router={router} />
+      </AppProvider>
+    </AuthProvider>
   </StrictMode>,
 )

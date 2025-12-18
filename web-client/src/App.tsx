@@ -4,7 +4,6 @@ import { Outlet } from 'react-router';
 import type { Navigation } from '@toolpad/core/AppProvider';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { AppProvider } from '@toolpad/core/AppProvider';
 
 const NAVIGATION: Navigation = [
   {
@@ -25,11 +24,10 @@ function App() {
   
 
   return (
-  <AppProvider>
-    <ReactRouterAppProvider navigation={NAVIGATION} branding={BRANDING}>
+
+    <ReactRouterAppProvider  navigation={NAVIGATION} branding={BRANDING}>
       <Outlet/>
-    </ReactRouterAppProvider>
-  </AppProvider>  
+    </ReactRouterAppProvider> 
   )
 }
 
