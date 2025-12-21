@@ -1,33 +1,48 @@
 
-import { ReactRouterAppProvider } from '@toolpad/core/react-router';
-import { Outlet } from 'react-router';
-import type { Navigation } from '@toolpad/core/AppProvider';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { AuthProvider } from './auth/AuthContext.tsx';
+import { PrivateRoute } from './auth/PrivateRout.tsx'
+import SignIn from './auth/SignIn.tsx'
+import Layout from './layouts/DashboardLayout.tsx';
+import { createBrowserRouter,RouterProvider } from 'react-router';
+import { ClientDashboardPage } from './pages/Dashboard.tsx';
+import { ClientOrdersPage } from './pages/Orders.tsx';
+import { AppProvider } from '@toolpad/core';
 
-const NAVIGATION: Navigation = [
+
+const router = createBrowserRouter([
   {
-    segment: '',
-    title: 'Dasboard',
-    icon: <DashboardIcon />,
-  },
-  {
-    segment: 'orders',
-    title: 'Orders',
-    icon: <ShoppingCartIcon />,
-  }
-];
-const BRANDING = {
-  title: 'Wiki',
-};
-function App() {
+        path: '/',
+        element:<PrivateRoute><Layout/></PrivateRoute>,
+        children: [
+          {
+            index: true,
+            element: <ClientDashboardPage />,
+          },
+          {
+            path: 'orders',
+            element: <ClientOrdersPage />,
+          }
+          
+        ]},
+          {
+             path: 'login',
+              element: <SignIn></SignIn>,
+          }
+    
+    ]
   
+);
+
+
+function App() {
 
   return (
-
-    <ReactRouterAppProvider  navigation={NAVIGATION} branding={BRANDING}>
-      <Outlet/>
-    </ReactRouterAppProvider> 
+    <AuthProvider>
+      <AppProvider>
+          <RouterProvider router={router} />  
+      </AppProvider>
+    </AuthProvider>
+    
   )
 }
 

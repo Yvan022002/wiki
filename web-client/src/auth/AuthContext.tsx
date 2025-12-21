@@ -1,4 +1,4 @@
-import { createContext, useContext, useState} from 'react';
+import { createContext, useContext, useEffect, useState} from 'react';
 import type { User } from '../models';
 
 interface AuthContextType {
@@ -16,12 +16,13 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
     const [user, setUser]= useState<User | null>(null);
     const [token, setToken]= useState<string | null>(null);
     const [isOnline, setIsOnline]= useState(false);
-    const [isLoading, setLoading]= useState(false);
+    const [isLoading, setLoading]= useState(true);
 
     const login= (newToken: string, newUser: User) => {
         setToken(newToken);
         setUser(newUser);
         setIsOnline(true);
+        localStorage.setItem('auth', JSON.stringify({ token: newToken, user: newUser }));
     }
     const logout= () => {
         setToken(null);
@@ -37,10 +38,22 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
         isOnline: isOnline,
         isLoading: isLoading
     } 
+    useEffect(() => {
+        const storedAuth = localStorage.getItem('auth');
+        if (storedAuth) {
+            const parsedAuth = JSON.parse(storedAuth);
+            console.log('Restoring auth from localStorage:', parsedAuth);
+            login(parsedAuth.token, parsedAuth.user);
+        }
+        setLoading(false);
+    },[]);
+    
+
     return (
         <authContext.Provider value={value}>
-            {children}
+                {children}
         </authContext.Provider>
+        
     );
 }
 export const useAuth=()=>{

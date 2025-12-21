@@ -15,8 +15,5 @@ export const login= async (userEmail: string, userPassword: string) => {
   if (!res.ok) {
     return { error: data.message || 'Login failed'};
   } 
-   if (data.token) {
-     localStorage.setItem('token', data.token);
-   }
    return { success: data.message, user: data.user, token: data.token };
 };
