@@ -1,4 +1,4 @@
-import { User } from "@/src/models/User";
+import { User, UserRole } from "@/src/models/User";
 import mongoose, { Schema,Document } from "mongoose";
 import { InscriptionDto } from "@/src/services/UserService";
 import {connectToDatabase} from "./DB";
@@ -6,7 +6,8 @@ import {connectToDatabase} from "./DB";
 const UserSchema = new Schema<User>({
     name: {type: String, required: true},
     email: {type: String, required: true},
-    password: {type: String, required: true}
+    password: {type: String, required: true},
+    role:{type:String, enum: Object.values(UserRole), required: true}
 });
 export const dbUserModel = mongoose.model<User>("User", UserSchema);
 

@@ -8,6 +8,7 @@ export type InscriptionDto = {
     name: string;
     email: string;
     password: string;
+    role: string;
 }
 
 import { UserRepository } from "@/src/Infranstructure/UserRepository";
@@ -22,7 +23,7 @@ export class UserService {
         this.userRepository = new UserRepository();
     }
     async generateToken(user:User): Promise<string> {
-        const token = jwt.sign({id: user.id, name: user.name, email: user.email}, process.env.JWT_SECRET!, { expiresIn: '1h' });
+        const token = jwt.sign({sub: user.id, name: user.name, email: user.email, role: user.role}, process.env.JWT_SECRET!, { expiresIn: '15min' });
         return token;
     }
     async registerUser(credentials: InscriptionDto) {
@@ -39,6 +40,6 @@ export class UserService {
             throw new Error("Invalid email or password");
         }
         const token = await this.generateToken(user);
-        return { user, token };
+        return { token };
     }
 }
