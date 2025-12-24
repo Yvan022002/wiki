@@ -23,7 +23,7 @@ export class UserService {
         this.userRepository = new UserRepository();
     }
     async generateToken(user:User): Promise<string> {
-        const token = jwt.sign({sub: user.id, name: user.name, email: user.email, role: user.role}, process.env.JWT_SECRET!, { expiresIn: '15min' });
+        const token = jwt.sign({id: user.id, name: user.name, email: user.email, role: user.role}, process.env.JWT_SECRET!, { expiresIn: '15min' });
         return token;
     }
     async registerUser(credentials: InscriptionDto) {
@@ -43,3 +43,4 @@ export class UserService {
         return { token };
     }
 }
+export const userService = new UserService();

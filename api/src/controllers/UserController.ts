@@ -2,8 +2,8 @@ import { Request, Response} from "express";
 import { User } from "../models/User";
 import { ConnexionDto, InscriptionDto, UserService } from "../services/UserService";
 import { Router } from "express";
+import { userService } from "../services/UserService";
 
-const userService = new UserService();
 
  export async function Login(req: Request, res: Response){
         try {
@@ -13,7 +13,7 @@ const userService = new UserService();
            return res.status(200).send({message: "User logged in", token: token});
         } catch (error) {
           console.log('Login attempt for credentials:', req.body);
-           return res.status(401).send({message: error instanceof Error ? error.message : error});
+           return res.status(500).send({message: error instanceof Error ? error.message : error});
         }
     }
 
@@ -23,7 +23,7 @@ const userService = new UserService();
             const user = await userService.registerUser(credentials);
           return  res.status(201).send({message: "User registered", user: user});
         } catch (error) {
-            return res.status(401).send({message: error instanceof Error ? error.message : error});
+            return res.status(500).send({message: error instanceof Error ? error.message : error});
         }   
     }
 

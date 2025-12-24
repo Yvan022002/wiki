@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import cors from 'cors';
 import userRouter from './src/routes/UserRoutes';
+import restaurantRouter from './src/routes/RestaurantRoutes';
 const app = express();
 
 // Middleware
@@ -11,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 
 app.use('/api', userRouter);
+app.use('/api', restaurantRouter);
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
